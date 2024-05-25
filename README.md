@@ -17,7 +17,7 @@
 ![example3](./example3.png)
 ## Compiling and running on Linux
 ```
-git clone --recurse-submodules https://github.com/m2neral/learnOpenGLCubes.git
+git clone --recurse-submodules https://github.com/m2neral/cubesGame.git
 cd learnOpenGLCubes
 mkdir build
 cmake -S . -B build
@@ -26,7 +26,7 @@ make -C build
 ```
 ## Compiling and running on Windows
 * Pick "Clone a Repository" on Visual Studio Community
-* Enter "https://github.com/m2neral/learnOpenGLCubes.git"
+* Enter "https://github.com/m2neral/cubesGame.git"
 * Edit CMakeLists.txt and uncomment the following line:
 ```
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
