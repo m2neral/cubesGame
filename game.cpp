@@ -1,11 +1,15 @@
 #include "game.h"
+#include "GLFW/glfw3.h"
 #include "blockIndicator.h"
+#include "heldBlock.h"
 #include <future>
 
 Camera camera(glm::vec3(0.0f, 50.0f, 0.0f));
 ChunkManager* chunkManager;
 BlockIndicator* blockIndicator;
+HeldBlock* heldBlock;
 int blockPlaceID = DIRT_BLOCK;
+int oldBlockPlaceID = DIRT_BLOCK;
 Physics physics;
 
 glm::vec2 lastPos;
@@ -24,14 +28,23 @@ Game::~Game(){}
 
 void Game::Init(){
   ResourceManager::LoadShader("blockIndicator.vert", "blockIndicator.frag", nullptr, "IndicatorShader");
+  ResourceManager::LoadShader("heldBlock.vert", "heldBlock.frag", nullptr, "heldBlock");
+  ResourceManager::LoadShader("cube.vert", "cube.frag", nullptr, "cubeShader");
+  ResourceManager::LoadShader("water.vert", "water.frag", nullptr, "waterShader");
+  ResourceManager::LoadShader("foliage.vert", "foliage.frag", nullptr, "foliageShader");
+  ResourceManager::LoadTexture("textureAtlas.png", true, "textureAtlas");
   this->indicatorShader = ResourceManager::GetShader("IndicatorShader");
+  this->heldShader = ResourceManager::GetShader("heldBlock");
   blockIndicator = new BlockIndicator();
   blockIndicator->Init();
+  heldBlock = new HeldBlock();
+  heldBlock->Init();
 
-  chunkManager = new ChunkManager();
+  chunkManager = new ChunkManager(ResourceManager::GetShader("cubeShader"), ResourceManager::GetShader("waterShader"), ResourceManager::GetShader("foliageShader"), ResourceManager::GetTexture("textureAtlas"));
   chunkManager->Init();
   physics.initial = false;
 }
+
 
 void Game::ChunkGen(){
   //I know the empty while loop looks wrong but this ensures each thread waits for its turn,
@@ -121,6 +134,35 @@ void Game::Render(){
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   DrawIndicator();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glClear(GL_DEPTH_BUFFER_BIT);
+  DrawHeld();
+}
+
+void Game::DrawHeld(){
+  if(oldBlockPlaceID != blockPlaceID){
+    oldBlockPlaceID = blockPlaceID;
+    std::vector<Face> tempFaces;
+    Block tempBlock = Block(blockPlaceID, glm::vec3(0.0f, 0.0f, 0.0f));
+    tempFaces.push_back(tempBlock.faceTop);
+    tempFaces.push_back(tempBlock.faceLeft);
+    tempFaces.push_back(tempBlock.faceFront);
+    tempBlock = Block();
+    heldBlock->faces = std::vector<Face>();
+    heldBlock->faces.swap(tempFaces);
+    tempFaces = std::vector<Face>();
+  }
+  glActiveTexture(GL_TEXTURE0);
+  ResourceManager::GetTexture("textureAtlas").Bind();
+  this->heldShader.Use();
+  this->heldShader.SetInt("texture1", 0);
+  this->heldShader.SetMat4("projection", projection);
+  this->heldShader.SetMat4("view", view);
+  glm::mat4 model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(0.75f, -0.5f, -1.0f));
+  model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+  model = glm::rotate(model, 0.1f, glm::vec3(0.3f, 0.0f, 0.3f));
+  this->heldShader.SetMat4("model", model);
+  heldBlock->Render();
 }
 
 void Game::DrawIndicator(){

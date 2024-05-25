@@ -29,7 +29,9 @@ public:
   void BreakBlock();
 private:
   Shader indicatorShader;
+  Shader heldShader;
   void DrawIndicator();
+  void DrawHeld();
   glm::vec3 blockIndicatorPos;
   glm::vec3 blockIndicatorDir;
 };

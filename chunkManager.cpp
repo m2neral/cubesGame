@@ -11,15 +11,11 @@ int renderDistance = 12;
 float renderDistanceInChunks = 15.0f * (float)renderDistance;
 float maxDistance = renderDistanceInChunks + 15.0f;
 
-ChunkManager::ChunkManager(){
-  ResourceManager::LoadShader("cube.vert", "cube.frag", nullptr, "cubeShader");
-  ResourceManager::LoadShader("water.vert", "water.frag", nullptr, "waterShader");
-  ResourceManager::LoadShader("foliage.vert", "foliage.frag", nullptr, "foliageShader");
-  ResourceManager::LoadTexture("textureAtlas.png", true, "textureAtlas");
-  shader = ResourceManager::GetShader("cubeShader");
-  waterShader = ResourceManager::GetShader("waterShader");
-  foliageShader = ResourceManager::GetShader("foliageShader");
-  texture = ResourceManager::GetTexture("textureAtlas");
+ChunkManager::ChunkManager(Shader &shader_, Shader &waterShader_, Shader &foliageShader_, Texture2D &texture_){
+  shader = shader_;
+  waterShader = waterShader_;
+  foliageShader = foliageShader_;
+  texture = texture_;
   time_t t;
   time(&t);
   seed = difftime(t, 0);
@@ -123,15 +119,15 @@ void ChunkManager::Update(glm::mat4 projection, glm::mat4 view, glm::vec3 camPos
   glDisable(GL_BLEND);
   glEnable(GL_CULL_FACE);
 
-  shader.Use();
   glActiveTexture(GL_TEXTURE0);
+  texture.Bind();
+  shader.Use();
   shader.SetInt("texture1", 0);
   shader.SetVec3("camNormal", camFront);
   shader.SetMat4("projection", projection);
   shader.SetMat4("view", view);
   glm::mat4 model = glm::mat4(1.0f);
   shader.SetMat4("model", model);
-  texture.Bind();
 
 
   for(auto it : chunkCentersForRendering){

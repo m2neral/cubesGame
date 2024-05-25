@@ -29,7 +29,7 @@ struct ChunkWithSide{
 
 class ChunkManager{
 public:
-  ChunkManager();
+  ChunkManager(Shader &shader_, Shader &waterShader_, Shader &foliageShader_, Texture2D &texture_);
   ~ChunkManager();
   void Init();
   void Update(glm::mat4 projection, glm::mat4 view, glm::vec3 camPos, glm::vec3 camFront, bool isGenBusy);
