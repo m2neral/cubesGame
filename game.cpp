@@ -171,8 +171,8 @@ void Game::DrawHeld(){
     swayVec.x = (float)cos(glfwGetTime() * 4) / 12;
     swayVec.y = (float)cos(glfwGetTime() * 8) / 12;
   }
-  swayVec = swayVec - physics.GetInputDirection() / 6.0f;
-  swayVec.y = swayVec.y - physics.GetVelocity().y / 3.0f;
+  swayVec = swayVec - physics.GetInputDirection() / 10.0f;
+  swayVec.y = swayVec.y - physics.GetVelocity().y / 2.0f;
   currentSway = physics.Lerp(swayVec, currentSway, 10.0f * dT);
   model = glm::translate(model, currentSway);
   this->heldShader.SetMat4("model", model);
@@ -184,6 +184,7 @@ void Game::DrawIndicator(){
     this->indicatorShader.Use();
     this->indicatorShader.SetMat4("projection", projection);
     this->indicatorShader.SetMat4("view", view);
+    this->indicatorShader.SetVec3("camNormal", camera.GetFrontVec3());
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, blockIndicatorPos);
     model = glm::scale(model, glm::vec3(1.01f, 1.01f, 1.01f));
