@@ -94,53 +94,42 @@ struct Block{
     glm::vec3 normalLeft = glm::vec3(-1.0f, 0.0f, 0.0f);
     glm::vec3 normalRight = glm::vec3(1.0f, 0.0f, 0.0f);
     
+    float texCenterX;
+    float texCenterY;
     
     if(blockID == DIRT_BLOCK){
-      leftTop = glm::vec2(0.0f, 1.0f);
-      leftBottom = glm::vec2(0.0f, 1.0f - 0.16f);
-      rightBottom = glm::vec2(0.16f, 1.0f - 0.16f);
-      rightTop = glm::vec2(0.16f, 1.0f);
+      texCenterX = 0;
+      texCenterY = 0;
     }else if(blockID == STONE_BLOCK){
-      leftTop = glm::vec2(0.48f, 1.0f);
-      leftBottom = glm::vec2(0.48f, 1.0f - 0.16f);
-      rightBottom = glm::vec2(0.64f, 1.0f - 0.16f);
-      rightTop = glm::vec2(0.64f, 1.0f);
+      texCenterX = 3;
+      texCenterY = 0;
     }else if(blockID == DEBUG_BLOCK){
-      leftTop = glm::vec2(0.64f, 1.0f);
-      leftBottom = glm::vec2(0.64f, 1.0f - 0.16f);
-      rightBottom = glm::vec2(0.8f, 1.0f - 0.16f);
-      rightTop = glm::vec2(0.8f, 1.0f);
+      texCenterX = 4;
+      texCenterY = 0;
     }else if(blockID == SAND_BLOCK){
-      leftTop = glm::vec2(0.80f, 1.0f);
-      leftBottom = glm::vec2(0.80f, 1.0f - 0.16f);
-      rightBottom = glm::vec2(0.96, 1.0f - 0.16f);
-      rightTop = glm::vec2(0.96, 1.0f);
+      texCenterX = 5;
+      texCenterY = 0;
     }else if(blockID == WATER_BLOCK){
-      leftTop = glm::vec2(0.0f, 1.0f - 0.16f);
-      leftBottom = glm::vec2(0.0f, 1.0f - 0.32f);
-      rightBottom = glm::vec2(0.16f, 1.0f - 0.32f);
-      rightTop = glm::vec2(0.16f, 1.0f - 0.16f);
+      texCenterX = 0;
+      texCenterY = 1;
     }else if(blockID == YELLOW_FLOWER_BLOCK){
-      leftTop = glm::vec2(0.32f, 1.0f - 0.16f);
-      leftBottom = glm::vec2(0.32f, 1.0f - 0.32f);
-      rightBottom = glm::vec2(0.48f, 1.0f - 0.32f);
-      rightTop = glm::vec2(0.48f, 1.0f - 0.16f);
+      texCenterX = 2;
+      texCenterY = 1;
     }else if(blockID == RED_FLOWER_BLOCK){
-      leftTop = glm::vec2(0.48f, 1.0f - 0.16f);
-      leftBottom = glm::vec2(0.48f, 1.0f - 0.32f);
-      rightBottom = glm::vec2(0.64f, 1.0f - 0.32f);
-      rightTop = glm::vec2(0.64f, 1.0f - 0.16f);
-    }else if(blockID == LOG_BLOCK){
-      leftTop = glm::vec2(0.64f, 1.0f - 0.16f);
-      leftBottom = glm::vec2(0.64f, 1.0f - 0.32f);
-      rightBottom = glm::vec2(0.8f, 1.0f - 0.32f);
-      rightTop = glm::vec2(0.8f, 1.0f - 0.16f);
+      texCenterX = 3;
+      texCenterY = 1;
     }else if(blockID == LEAVES_BLOCK){
-      leftTop = glm::vec2(0.0f, 1.0f - 0.32f);
-      leftBottom = glm::vec2(0.0f, 1.0f - 0.48f);
-      rightBottom = glm::vec2(0.16f, 1.0f - 0.48f);
-      rightTop = glm::vec2(0.16f, 1.0f - 0.32f);
+      texCenterX = 0;
+      texCenterY = 2;
     }
+
+    texCenterX = 0.08f + texCenterX * 0.16f;
+    texCenterY = 1.0f - 0.08f - texCenterY * 0.16f;
+
+    leftTop = glm::vec2(texCenterX - 0.08f, texCenterY + 0.08f);
+    leftBottom = glm::vec2(texCenterX - 0.08f, texCenterY - 0.08f);
+    rightBottom = glm::vec2(texCenterX + 0.08f, texCenterY - 0.08f);
+    rightTop = glm::vec2(texCenterX + 0.08f, texCenterY + 0.08f);
 
     glm::vec2 sideLeftTop = leftTop;
     glm::vec2 sideLeftBottom = leftBottom;
@@ -166,8 +155,21 @@ struct Block{
       bottomRightTop = glm::vec2(0.16f, 1.0f);
       topLeftTop = glm::vec2(0.16f, 1.0f);
       topLeftBottom = glm::vec2(0.16f, 1.0f - 0.16f);
-      topRightTop = glm::vec2(0.32f, 1.0f);
       topRightBottom = glm::vec2(0.32f, 1.0f - 0.16f);
+      topRightTop = glm::vec2(0.32f, 1.0f);
+    }else if(blockID == LOG_BLOCK){
+      sideLeftTop = glm::vec2(0.64, 1.0f - 0.16f);
+      sideLeftBottom = glm::vec2(0.64f, 1.0f - 0.32f);
+      sideRightBottom = glm::vec2(0.8f, 1.0f - 0.32f);
+      sideRightTop = glm::vec2(0.8f, 1.0f - 0.16f);
+      bottomLeftTop = glm::vec2(0.8f, 1.0f - 0.16f);
+      bottomLeftBottom = glm::vec2(0.8f, 1.0f - 0.32f);
+      bottomRightBottom = glm::vec2(0.96f, 1.0f - 0.32f);
+      bottomRightTop = glm::vec2(0.96, 1.0f - 0.16f);
+      topLeftTop = bottomLeftTop;
+      topLeftBottom = bottomLeftBottom;
+      topRightBottom = bottomRightBottom;
+      topRightTop = bottomRightTop;
     }
 
     if(blockID == YELLOW_FLOWER_BLOCK || blockID == RED_FLOWER_BLOCK){

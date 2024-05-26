@@ -34,6 +34,8 @@ private:
   void DrawHeld();
   glm::vec3 blockIndicatorPos;
   glm::vec3 blockIndicatorDir;
+  float dT;
+  glm::vec3 currentSway = glm::vec3(0.0f, 0.0f, 0.0f);
 };
 
 #endif // !GAME_H

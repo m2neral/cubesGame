@@ -9,7 +9,7 @@ ChunkManager* chunkManager;
 BlockIndicator* blockIndicator;
 HeldBlock* heldBlock;
 int blockPlaceID = DIRT_BLOCK;
-int oldBlockPlaceID = DIRT_BLOCK;
+int oldBlockPlaceID = DEBUG_BLOCK;
 Physics physics;
 
 glm::vec2 lastPos;
@@ -127,6 +127,7 @@ void Game::Update(float deltaTime){
   camera.SetPositionVec3(physics.Lerp(physicsPosition, camera.GetPositionVec3(), 20.0f * deltaTime));
   projection = glm::perspective(glm::radians(camera.Zoom), static_cast<float>(width) / static_cast<float>(height), 0.1f, 500.0f);
   view = camera.GetViewMatrix();
+  dT = deltaTime;
 }
 
 void Game::Render(){
@@ -137,6 +138,7 @@ void Game::Render(){
   glClear(GL_DEPTH_BUFFER_BIT);
   DrawHeld();
 }
+
 
 void Game::DrawHeld(){
   if(oldBlockPlaceID != blockPlaceID){
@@ -158,9 +160,21 @@ void Game::DrawHeld(){
   this->heldShader.SetMat4("projection", projection);
   this->heldShader.SetMat4("view", view);
   glm::mat4 model = glm::mat4(1.0f);
-  model = glm::translate(model, glm::vec3(0.75f, -0.5f, -1.0f));
+  model = glm::translate(model, glm::vec3(0.75f, -0.6f, -1.0f));
   model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
   model = glm::rotate(model, 0.1f, glm::vec3(0.3f, 0.0f, 0.3f));
+  glm::vec3 swayVec = glm::vec3(0.0f, 0.0f, 0.0f);
+  glm::vec3 currentVelocity = physics.GetVelocity();
+  if(abs(currentVelocity.x) < 0.1f && abs(currentVelocity.z) < 0.1f){
+    swayVec = glm::vec3(0.0f, 0.0f, 0.0f);
+  }else{
+    swayVec.x = (float)cos(glfwGetTime() * 4) / 12;
+    swayVec.y = (float)cos(glfwGetTime() * 8) / 12;
+  }
+  swayVec = swayVec - physics.GetInputDirection() / 6.0f;
+  swayVec.y = swayVec.y - physics.GetVelocity().y / 3.0f;
+  currentSway = physics.Lerp(swayVec, currentSway, 10.0f * dT);
+  model = glm::translate(model, currentSway);
   this->heldShader.SetMat4("model", model);
   heldBlock->Render();
 }

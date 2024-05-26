@@ -33,6 +33,9 @@ public:
   void ProcessWalk();
   glm::vec3 Update(glm::vec3 front_, glm::vec3 fakeFront_, float deltaTime, std::shared_ptr<std::vector<glm::vec3>> collisionCoords_);
 
+  glm::vec3 GetVelocity();
+  glm::vec3 GetInputDirection();
+
   bool walkForward = false;
   bool walkBackward = false;
   bool walkLeft = false;
@@ -44,6 +47,7 @@ public:
   glm::vec3 indicatorDirection;
 
   glm::vec3 Lerp(glm::vec3 targetVelocity, glm::vec3 currentVelocity, float weight);
+  float Lerp(float target, float current, float weight);
 
   std::vector<glm::vec3> collisionCoords;
 
@@ -51,6 +55,7 @@ private:
   glm::vec3 fakeFront;
   glm::vec3 front;
   glm::vec3 moveDirection;
+  glm::vec3 inputDirection;
   float gravity = 0.035f;
   float moveSpeed = 0.2f;
   float jumpForce = 0.275f;

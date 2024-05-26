@@ -13,6 +13,13 @@ glm::vec3 sixDirections[] = {
   glm::vec3(0.0f, 0.0f, -1.0f) //backward
 };
 
+glm::vec3 Physics::GetVelocity(){
+  return velocity;
+}
+
+glm::vec3 Physics::GetInputDirection(){
+  return inputDirection;
+}
 void Physics::ProcessWalk(){
   //The walk direction is set based on keyboard input.
   //It is then rotated by the "fakeFront" vector, which is explained below. 
@@ -27,6 +34,7 @@ void Physics::ProcessWalk(){
   else if(walkRight){dirLeftRight = 1.0f;}
 
   glm::vec3 tempDirection = glm::vec3(dirLeftRight, 0.0f, dirBackwardForward);
+  inputDirection = tempDirection;
   if(dirBackwardForward != 0.0f || dirLeftRight != 0.0f){
     glm::mat4 moveMatrix = glm::mat4(1.0f);
     moveMatrix = glm::rotate(moveMatrix, glm::radians(((glm::atan(fakeFront.x, fakeFront.z) / glm::pi<float>() ) + 1.0f) * 180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -198,4 +206,14 @@ glm::vec3 Physics::Lerp(glm::vec3 targetVelocity, glm::vec3 currentVelocity, flo
     interpolatedVector.z += weight * difference.z;
   }
   return interpolatedVector;
+}
+
+float Physics::Lerp(float target, float current, float weight){
+  float interpolated = current;
+  float difference = target - current;
+
+  if(target != current){
+    interpolated += weight * difference;
+  }
+  return interpolated;
 }
