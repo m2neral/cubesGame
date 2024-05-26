@@ -12,6 +12,7 @@ void main(){
   if(dot(Normal, camNormal) > 0.75 && dot(Normal, camNormal) <= 1.0){
     discard;
   }
+  // vec3 ambient = vec3(0.6, 0.6, 0.6) * vec3(texture(texture1, TexCoords));
   vec3 ambient = vec3(0.6, 0.6, 0.6) * vec3(texture(texture1, TexCoords));
   // vec3 lightDir = normalize(vec3(1000.0, 1000.0, 1000.0) - FragPos);
   vec3 lightDir = normalize(vec3(0.0, 1.0, 0.0));
