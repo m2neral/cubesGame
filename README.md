@@ -4,6 +4,7 @@
 * You can now break and place blocks.
 * There's now basic AABB collision detection and physics running at constant 30fps independent of everything else. It still has many issues but it feels significantly better than how it used to be.
 * I've done my best to make it use as little memory as possible.
+* Windows and Linux builds are available at https://github.com/m2neral/cubesGame/releases/tag/test-build if you want to test it yourself.
 ## Controls
 * WASD for movement.
 * Space for jumping.
