@@ -38,3 +38,6 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 * The boilerplate code is almost entirely from https://learnopengl.com as that was the resource I was using to learn the basics.
 * The perlin noise code is from https://youtu.be/kCIaHqb60Cw
 * Finally managed to learn and add everything I wanted with this project. I will probably add a menu with basic settings next and play around with shaders and other visuals before being done.
+## Experiments
+* This is an experiment with real-time shadows. It is not in the code as I only did it to learn the concept.
+![experiment_shadow](./experiment_shadow.png)
