@@ -1,5 +1,6 @@
 #include "game.h"
 #include "GLFW/glfw3.h"
+#include "block.h"
 #include "blockIndicator.h"
 #include "heldBlock.h"
 #include <future>
@@ -21,6 +22,18 @@ bool isGenBusy = false;
 bool isAskForCollisionCoords = false;
 
 std::vector<std::future<void>> futuresVec;
+
+
+int currentHotbarItem = 0;
+int hotbarItems[6] = {
+  DIRT_BLOCK,
+  GRASS_BLOCK,
+  STONE_BLOCK,
+  DEBUG_BLOCK,
+  SAND_BLOCK,
+  LOG_BLOCK
+};
+
 
 Game::Game(unsigned int width_, unsigned int height_): width(width_), height(height_){}
 
@@ -122,6 +135,37 @@ void Game::PhysicsUpdate(float deltaTime){
 
 }
 
+void Game::MouseScroll(bool isIncrement){
+  if(keys[GLFW_KEY_LEFT_SHIFT]){
+    if(isIncrement){
+      camera.Zoom += 10.0f;
+    }else{
+      camera.Zoom -= 10.0f;
+    }
+    if(camera.Zoom < 50.0f){
+      camera.Zoom = 50.0f;
+    }
+    if(camera.Zoom > 150.0f){
+      camera.Zoom = 150.0f;
+    }
+  }else{
+    if(isIncrement){
+      currentHotbarItem += 1;
+    }else{
+      currentHotbarItem -= 1;
+    }
+    if(currentHotbarItem > 5){
+      currentHotbarItem = 0;
+    }
+    if(currentHotbarItem < 0){
+      currentHotbarItem = 5;
+    }
+
+    blockPlaceID = hotbarItems[currentHotbarItem];
+
+  }
+}
+
 void Game::Update(float deltaTime){
   //The player position is set at 30fps. The camera position is then interpolated every frame for smooth movement regardless of framerate.
   camera.SetPositionVec3(physics.Lerp(physicsPosition, camera.GetPositionVec3(), 20.0f * deltaTime));
@@ -199,4 +243,5 @@ void Game::UpdateCamera(float xOffset, float yOffset){
 
 void Game::Clear(){
   delete blockIndicator;
+  delete heldBlock;
 }

@@ -2,10 +2,11 @@
 #include "game.h"
 #include "resourceManager.h"
 
-void frameBufferSizeCallback(GLFWwindow* window, int width, int height);
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
-void mouseCallback(GLFWwindow* window, double xposIn, double yposIn);
+void FrameBufferSizeCallback(GLFWwindow* window, int width, int height);
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void MouseCallback(GLFWwindow* window, double xposIn, double yposIn);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+void ScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
 const unsigned int screenWidth = 960;
 const unsigned int screenHeight = 540;
@@ -32,11 +33,12 @@ int main(){
     std::cout << "GLAD failed to initialize" << std::endl;
     return -1;
   }
-  glfwSetKeyCallback(window, keyCallback);
-  glfwSetFramebufferSizeCallback(window, frameBufferSizeCallback);
+  glfwSetKeyCallback(window, KeyCallback);
+  glfwSetFramebufferSizeCallback(window, FrameBufferSizeCallback);
   glfwSetMouseButtonCallback(window, MouseButtonCallback);
-  glfwSetCursorPosCallback(window, mouseCallback);
+  glfwSetCursorPosCallback(window, MouseCallback);
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  glfwSetScrollCallback(window, ScrollCallback);
 
   glViewport(0, 0, screenWidth, screenHeight);
   glEnable(GL_CULL_FACE);
@@ -81,7 +83,16 @@ int main(){
 
 }
 
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode){
+void ScrollCallback(GLFWwindow* window, double xOffset, double yOffset){
+  if(yOffset > 0.0f){
+    cubeGame.MouseScroll(true);
+  }
+  if(yOffset < 0.0f){
+    cubeGame.MouseScroll(false);
+  }
+}
+
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode){
   if(key == GLFW_KEY_Q && action == GLFW_PRESS){
     glfwSetWindowShouldClose(window, true);
   }
@@ -106,11 +117,11 @@ void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods){
 }
 
 
-void frameBufferSizeCallback(GLFWwindow* window, int width, int height){
+void FrameBufferSizeCallback(GLFWwindow* window, int width, int height){
   glViewport(0, 0, width, height);
 }
 
-void mouseCallback(GLFWwindow* window, double xposIn, double yposIn){
+void MouseCallback(GLFWwindow* window, double xposIn, double yposIn){
   float xPos = static_cast<float>(xposIn);
   float yPos = static_cast<float>(yposIn);
 

@@ -7,7 +7,8 @@
 ## Controls
 * WASD for movement.
 * Space for jumping.
-* Number row 1-6 to change the block you place.
+* Number row 1-6 of scroll wheel to change the block you place.
+* Left shift + scroll wheel to change FOV.
 * Left click to break blocks.
 * Right click to place blocks.
 * Q to quit.

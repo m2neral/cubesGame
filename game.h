@@ -8,6 +8,7 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include <memory>
 #include "blockIndicator.h"
+#include "menu.h"
 
 class Game{
 public:
@@ -27,6 +28,7 @@ public:
   glm::vec3 physicsPosition = glm::vec3(0.0f, 0.0f, 0.0f);
   void PlaceBlock();
   void BreakBlock();
+  void MouseScroll(bool isIncrement);
 private:
   Shader indicatorShader;
   Shader heldShader;
@@ -36,6 +38,7 @@ private:
   glm::vec3 blockIndicatorDir;
   float dT;
   glm::vec3 currentSway = glm::vec3(0.0f, 0.0f, 0.0f);
+  float FOV = 70.0f;
 };
 
 #endif // !GAME_H
