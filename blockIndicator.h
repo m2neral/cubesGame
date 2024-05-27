@@ -4,6 +4,7 @@
 #include "glad/glad.h"
 #include "block.h"
 #include "glm/fwd.hpp"
+#include <vector>
 
 class BlockIndicator {
 public:
